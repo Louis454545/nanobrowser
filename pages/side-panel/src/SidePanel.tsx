@@ -6,6 +6,7 @@ import { PiPlusBold } from 'react-icons/pi';
 import { GrHistory } from 'react-icons/gr';
 import { type Message, Actors, chatHistoryStore, agentModelStore, generalSettingsStore } from '@extension/storage';
 import favoritesStorage, { type FavoritePrompt } from '@extension/storage/lib/prompt/favorites';
+import { Button, Card, CardContent } from '@extension/ui';
 import MessageList from './components/MessageList';
 import ChatInput from './components/ChatInput';
 import ChatHistoryList from './components/ChatHistoryList';
@@ -999,19 +1000,14 @@ const SidePanel = () => {
   };
 
   return (
-    <div>
-      <div
-        className={`flex h-screen flex-col ${isDarkMode ? 'bg-slate-900' : "bg-[url('/bg.jpg')] bg-cover bg-no-repeat"} overflow-hidden border ${isDarkMode ? 'border-sky-800' : 'border-[rgb(186,230,253)]'} rounded-2xl`}>
+    <div className={`${isDarkMode ? 'dark' : ''}`}>
+      <div className="flex h-screen flex-col bg-background text-foreground overflow-hidden border border-border rounded-2xl">
         <header className="header relative">
           <div className="header-logo">
             {showHistory ? (
-              <button
-                type="button"
-                onClick={() => handleBackToChat(false)}
-                className={`${isDarkMode ? 'text-sky-400 hover:text-sky-300' : 'text-sky-400 hover:text-sky-500'} cursor-pointer`}
-                aria-label="Back to chat">
+              <Button variant="ghost" size="sm" onClick={() => handleBackToChat(false)} aria-label="Back to chat">
                 ← Back
-              </button>
+              </Button>
             ) : (
               <img src="/icon-128.png" alt="Extension Logo" className="size-6" />
             )}
@@ -1019,24 +1015,24 @@ const SidePanel = () => {
           <div className="header-icons">
             {!showHistory && (
               <>
-                <button
-                  type="button"
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={handleNewChat}
                   onKeyDown={e => e.key === 'Enter' && handleNewChat()}
-                  className={`header-icon ${isDarkMode ? 'text-sky-400 hover:text-sky-300' : 'text-sky-400 hover:text-sky-500'} cursor-pointer`}
                   aria-label="New Chat"
                   tabIndex={0}>
                   <PiPlusBold size={20} />
-                </button>
-                <button
-                  type="button"
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={handleLoadHistory}
                   onKeyDown={e => e.key === 'Enter' && handleLoadHistory()}
-                  className={`header-icon ${isDarkMode ? 'text-sky-400 hover:text-sky-300' : 'text-sky-400 hover:text-sky-500'} cursor-pointer`}
                   aria-label="Load History"
                   tabIndex={0}>
                   <GrHistory size={20} />
-                </button>
+                </Button>
               </>
             )}
             <a
@@ -1046,15 +1042,15 @@ const SidePanel = () => {
               className={`header-icon ${isDarkMode ? 'text-sky-400 hover:text-sky-300' : 'text-sky-400 hover:text-sky-500'}`}>
               <RxDiscordLogo size={20} />
             </a>
-            <button
-              type="button"
+            <Button
+              variant="ghost"
+              size="icon"
               onClick={() => chrome.runtime.openOptionsPage()}
               onKeyDown={e => e.key === 'Enter' && chrome.runtime.openOptionsPage()}
-              className={`header-icon ${isDarkMode ? 'text-sky-400 hover:text-sky-300' : 'text-sky-400 hover:text-sky-500'} cursor-pointer`}
               aria-label="Settings"
               tabIndex={0}>
               <FiSettings size={20} />
-            </button>
+            </Button>
           </div>
         </header>
         {showHistory ? (
@@ -1072,38 +1068,32 @@ const SidePanel = () => {
           <>
             {/* Show loading state while checking model configuration */}
             {hasConfiguredModels === null && (
-              <div
-                className={`flex flex-1 items-center justify-center p-8 ${isDarkMode ? 'text-sky-300' : 'text-sky-600'}`}>
-                <div className="text-center">
-                  <div className="mx-auto mb-4 size-8 animate-spin rounded-full border-2 border-sky-400 border-t-transparent"></div>
-                  <p>Checking configuration...</p>
-                </div>
-              </div>
+              <Card className="flex flex-1 items-center justify-center m-4">
+                <CardContent className="text-center py-8">
+                  <div className="mx-auto mb-4 size-8 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
+                  <p className="text-muted-foreground">Checking configuration...</p>
+                </CardContent>
+              </Card>
             )}
 
             {/* Show setup message when no models are configured */}
             {hasConfiguredModels === false && (
-              <div
-                className={`flex flex-1 items-center justify-center p-8 ${isDarkMode ? 'text-sky-300' : 'text-sky-600'}`}>
-                <div className="max-w-md text-center">
+              <Card className="flex flex-1 items-center justify-center m-4">
+                <CardContent className="max-w-md text-center py-8">
                   <img src="/icon-128.png" alt="Nanobrowser Logo" className="mx-auto mb-4 size-12" />
-                  <h3 className={`mb-2 text-lg font-semibold ${isDarkMode ? 'text-sky-200' : 'text-sky-700'}`}>
-                    Welcome to Nanobrowser!
-                  </h3>
-                  <p className="mb-4">To get started, please configure your API keys in the settings page.</p>
-                  <button
-                    onClick={() => chrome.runtime.openOptionsPage()}
-                    className={`my-4 rounded-lg px-4 py-2 font-medium transition-colors ${
-                      isDarkMode ? 'bg-sky-600 text-white hover:bg-sky-700' : 'bg-sky-500 text-white hover:bg-sky-600'
-                    }`}>
+                  <h3 className="mb-2 text-lg font-semibold text-foreground">Welcome to Nanobrowser!</h3>
+                  <p className="mb-4 text-muted-foreground">
+                    To get started, please configure your API keys in the settings page.
+                  </p>
+                  <Button onClick={() => chrome.runtime.openOptionsPage()} className="my-4">
                     Open Settings
-                  </button>
+                  </Button>
                   <div className="mt-4 text-sm opacity-75">
                     <a
                       href="https://github.com/nanobrowser/nanobrowser?tab=readme-ov-file#-quick-start"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`${isDarkMode ? 'text-sky-400 hover:text-sky-300' : 'text-sky-700 hover:text-sky-600'}`}>
+                      className="text-primary hover:text-primary/80">
                       Quick Start Guide
                     </a>
                     <span className="mx-2">•</span>
@@ -1111,12 +1101,12 @@ const SidePanel = () => {
                       href="https://discord.gg/NN3ABHggMK"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`${isDarkMode ? 'text-sky-400 hover:text-sky-300' : 'text-sky-700 hover:text-sky-600'}`}>
+                      className="text-primary hover:text-primary/80">
                       Join Our Community
                     </a>
                   </div>
-                </div>
-              </div>
+                </CardContent>
+              </Card>
             )}
 
             {/* Show normal chat interface when models are configured */}

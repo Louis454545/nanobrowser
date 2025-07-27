@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { type GeneralSettingsConfig, generalSettingsStore, DEFAULT_GENERAL_SETTINGS } from '@extension/storage';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, Input, Label, Switch } from '@extension/ui';
 
 interface GeneralSettingsProps {
   isDarkMode?: boolean;
@@ -27,208 +28,153 @@ export const GeneralSettings = ({ isDarkMode = false }: GeneralSettingsProps) =>
   };
 
   return (
-    <section className="space-y-6">
-      <div
-        className={`rounded-lg border ${isDarkMode ? 'border-slate-700 bg-slate-800' : 'border-blue-100 bg-white'} p-6 text-left shadow-sm`}>
-        <h2 className={`mb-4 text-left text-xl font-semibold ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>
-          General
-        </h2>
-
-        <div className="space-y-4">
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>General Settings</CardTitle>
+          <CardDescription>Configure general behavior and limits for the extension</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
           <div className="flex items-center justify-between">
-            <div>
-              <h3 className={`text-base font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+            <div className="space-y-0.5">
+              <Label htmlFor="maxSteps" className="text-base font-medium">
                 Max Steps per Task
-              </h3>
-              <p className={`text-sm font-normal ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                Step limit per task
-              </p>
+              </Label>
+              <p className="text-sm text-muted-foreground">Step limit per task</p>
             </div>
-            <label htmlFor="maxSteps" className="sr-only">
-              Max Steps per Task
-            </label>
-            <input
+            <Input
               id="maxSteps"
               type="number"
               min={1}
               max={50}
               value={settings.maxSteps}
               onChange={e => updateSetting('maxSteps', Number.parseInt(e.target.value, 10))}
-              className={`w-20 rounded-md border ${isDarkMode ? 'border-slate-600 bg-slate-700 text-gray-200' : 'border-gray-300 bg-white text-gray-700'} px-3 py-2`}
+              className="w-20"
             />
           </div>
 
           <div className="flex items-center justify-between">
-            <div>
-              <h3 className={`text-base font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+            <div className="space-y-0.5">
+              <Label htmlFor="maxActionsPerStep" className="text-base font-medium">
                 Max Actions per Step
-              </h3>
-              <p className={`text-sm font-normal ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                Action limit per step
-              </p>
+              </Label>
+              <p className="text-sm text-muted-foreground">Action limit per step</p>
             </div>
-            <label htmlFor="maxActionsPerStep" className="sr-only">
-              Max Actions per Step
-            </label>
-            <input
+            <Input
               id="maxActionsPerStep"
               type="number"
               min={1}
               max={50}
               value={settings.maxActionsPerStep}
               onChange={e => updateSetting('maxActionsPerStep', Number.parseInt(e.target.value, 10))}
-              className={`w-20 rounded-md border ${isDarkMode ? 'border-slate-600 bg-slate-700 text-gray-200' : 'border-gray-300 bg-white text-gray-700'} px-3 py-2`}
+              className="w-20"
             />
           </div>
 
           <div className="flex items-center justify-between">
-            <div>
-              <h3 className={`text-base font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+            <div className="space-y-0.5">
+              <Label htmlFor="maxFailures" className="text-base font-medium">
                 Failure Tolerance
-              </h3>
-              <p className={`text-sm font-normal ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                How many consecutive failures before stopping
-              </p>
+              </Label>
+              <p className="text-sm text-muted-foreground">How many consecutive failures before stopping</p>
             </div>
-            <label htmlFor="maxFailures" className="sr-only">
-              Failure Tolerance
-            </label>
-            <input
+            <Input
               id="maxFailures"
               type="number"
               min={1}
               max={10}
               value={settings.maxFailures}
               onChange={e => updateSetting('maxFailures', Number.parseInt(e.target.value, 10))}
-              className={`w-20 rounded-md border ${isDarkMode ? 'border-slate-600 bg-slate-700 text-gray-200' : 'border-gray-300 bg-white text-gray-700'} px-3 py-2`}
+              className="w-20"
             />
           </div>
 
           <div className="flex items-center justify-between">
-            <div>
-              <h3 className={`text-base font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+            <div className="space-y-0.5">
+              <Label htmlFor="useVision" className="text-base font-medium">
                 Enable Vision
-              </h3>
-              <p className={`text-sm font-normal ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+              </Label>
+              <p className="text-sm text-muted-foreground">
                 Use vision capability of LLMs (consumes more tokens for better results)
               </p>
             </div>
-            <div className="relative inline-flex cursor-pointer items-center">
-              <input
-                id="useVision"
-                type="checkbox"
-                checked={settings.useVision}
-                onChange={e => updateSetting('useVision', e.target.checked)}
-                className="peer sr-only"
-              />
-              <label
-                htmlFor="useVision"
-                className={`peer h-6 w-11 rounded-full ${isDarkMode ? 'bg-slate-600' : 'bg-gray-200'} after:absolute after:left-[2px] after:top-[2px] after:size-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300`}>
-                <span className="sr-only">Enable Vision</span>
-              </label>
-            </div>
+            <Switch
+              id="useVision"
+              checked={settings.useVision}
+              onCheckedChange={checked => updateSetting('useVision', checked)}
+            />
           </div>
 
           <div className="flex items-center justify-between">
-            <div>
-              <h3 className={`text-base font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+            <div className="space-y-0.5">
+              <Label htmlFor="displayHighlights" className="text-base font-medium">
                 Display Highlights
-              </h3>
-              <p className={`text-sm font-normal ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+              </Label>
+              <p className="text-sm text-muted-foreground">
                 Show visual highlights on interactive elements (e.g. buttons, links, etc.)
               </p>
             </div>
-            <div className="relative inline-flex cursor-pointer items-center">
-              <input
-                id="displayHighlights"
-                type="checkbox"
-                checked={settings.displayHighlights}
-                onChange={e => updateSetting('displayHighlights', e.target.checked)}
-                className="peer sr-only"
-              />
-              <label
-                htmlFor="displayHighlights"
-                className={`peer h-6 w-11 rounded-full ${isDarkMode ? 'bg-slate-600' : 'bg-gray-200'} after:absolute after:left-[2px] after:top-[2px] after:size-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300`}>
-                <span className="sr-only">Display Highlights</span>
-              </label>
-            </div>
+            <Switch
+              id="displayHighlights"
+              checked={settings.displayHighlights}
+              onCheckedChange={checked => updateSetting('displayHighlights', checked)}
+            />
           </div>
 
           <div className="flex items-center justify-between">
-            <div>
-              <h3 className={`text-base font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+            <div className="space-y-0.5">
+              <Label htmlFor="planningInterval" className="text-base font-medium">
                 Replanning Frequency
-              </h3>
-              <p className={`text-sm font-normal ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                Reconsider and update the plan every [Number] steps
-              </p>
+              </Label>
+              <p className="text-sm text-muted-foreground">Reconsider and update the plan every [Number] steps</p>
             </div>
-            <label htmlFor="planningInterval" className="sr-only">
-              Replanning Frequency
-            </label>
-            <input
+            <Input
               id="planningInterval"
               type="number"
               min={1}
               max={20}
               value={settings.planningInterval}
               onChange={e => updateSetting('planningInterval', Number.parseInt(e.target.value, 10))}
-              className={`w-20 rounded-md border ${isDarkMode ? 'border-slate-600 bg-slate-700 text-gray-200' : 'border-gray-300 bg-white text-gray-700'} px-3 py-2`}
+              className="w-20"
             />
           </div>
 
           <div className="flex items-center justify-between">
-            <div>
-              <h3 className={`text-base font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+            <div className="space-y-0.5">
+              <Label htmlFor="minWaitPageLoad" className="text-base font-medium">
                 Page Load Wait Time
-              </h3>
-              <p className={`text-sm font-normal ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                Minimum wait time after page loads (250-5000ms)
-              </p>
+              </Label>
+              <p className="text-sm text-muted-foreground">Minimum wait time after page loads (250-5000ms)</p>
             </div>
-            <div className="flex items-center space-x-2">
-              <label htmlFor="minWaitPageLoad" className="sr-only">
-                Page Load Wait Time
-              </label>
-              <input
-                id="minWaitPageLoad"
-                type="number"
-                min={250}
-                max={5000}
-                step={50}
-                value={settings.minWaitPageLoad}
-                onChange={e => updateSetting('minWaitPageLoad', Number.parseInt(e.target.value, 10))}
-                className={`w-20 rounded-md border ${isDarkMode ? 'border-slate-600 bg-slate-700 text-gray-200' : 'border-gray-300 bg-white text-gray-700'} px-3 py-2`}
-              />
-            </div>
+            <Input
+              id="minWaitPageLoad"
+              type="number"
+              min={250}
+              max={5000}
+              step={50}
+              value={settings.minWaitPageLoad}
+              onChange={e => updateSetting('minWaitPageLoad', Number.parseInt(e.target.value, 10))}
+              className="w-20"
+            />
           </div>
 
           <div className="flex items-center justify-between">
-            <div>
-              <h3 className={`text-base font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                Replay Historical Tasks( experimental )
-              </h3>
-              <p className={`text-sm font-normal ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            <div className="space-y-0.5">
+              <Label htmlFor="replayHistoricalTasks" className="text-base font-medium">
+                Replay Historical Tasks (experimental)
+              </Label>
+              <p className="text-sm text-muted-foreground">
                 Enable storing and replaying of agent step history (experimental, may have issues)
               </p>
             </div>
-            <div className="relative inline-flex cursor-pointer items-center">
-              <input
-                id="replayHistoricalTasks"
-                type="checkbox"
-                checked={settings.replayHistoricalTasks}
-                onChange={e => updateSetting('replayHistoricalTasks', e.target.checked)}
-                className="peer sr-only"
-              />
-              <label
-                htmlFor="replayHistoricalTasks"
-                className={`peer h-6 w-11 rounded-full ${isDarkMode ? 'bg-slate-600' : 'bg-gray-200'} after:absolute after:left-[2px] after:top-[2px] after:size-5 after:rounded-full after:border after:border-gray-300 after:bg-white after:transition-all after:content-[''] peer-checked:bg-blue-600 peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300`}>
-                <span className="sr-only">Replay Historical Tasks</span>
-              </label>
-            </div>
+            <Switch
+              id="replayHistoricalTasks"
+              checked={settings.replayHistoricalTasks}
+              onCheckedChange={checked => updateSetting('replayHistoricalTasks', checked)}
+            />
           </div>
-        </div>
-      </div>
-    </section>
+        </CardContent>
+      </Card>
+    </div>
   );
 };
