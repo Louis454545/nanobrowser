@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import { FaMicrophone } from 'react-icons/fa';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import { Button, Input } from '@extension/ui';
 
 interface ChatInputProps {
   onSendMessage: (text: string) => void;

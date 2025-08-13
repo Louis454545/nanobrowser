@@ -8,7 +8,7 @@
  */
 import { useEffect, useState, useRef, useCallback } from 'react';
 import type { KeyboardEvent } from 'react';
-import { Button } from '@extension/ui';
+import { Button, Input, Switch, Card, CardHeader, CardTitle, CardContent, Label } from '@extension/ui';
 import {
   llmProviderStore,
   agentModelStore,
